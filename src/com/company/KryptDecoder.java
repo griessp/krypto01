@@ -66,16 +66,34 @@ public class KryptDecoder {
 
             // Umwandeln in String
             String fullText = new String(fullFile, StandardCharsets.UTF_8);
-            System.out.print(fullText);
+            //System.out.print(fullText);
+
+            // initiale Stelle im Schlüssel-Array key[]
+            int keyPos = key[0];
+
+            // String Zeichen für Zeichen durchgehen
+            for (int i = 0; i < fullText.length(); i++) {
+
+                //Zeichen decodieren
+                System.out.print(decode(fullText.charAt(i), i));
+            }
+
         }
         catch  (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     *
+     * @param c character zum Dekodieren
+     * @param offset Wert an der aktuellen Position im key[] Array zur Verschiebung nach Vigenere
+     * @return
+     */
     private char decode (char c, int offset)
     {
-
+        char decodedChar = c;
+        return (decodedChar);
     }
 
 
