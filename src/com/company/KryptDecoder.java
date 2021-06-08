@@ -66,12 +66,18 @@ public class KryptDecoder {
 
             // Umwandeln in String
             String fullText = new String(fullFile, StandardCharsets.UTF_8);
-
             System.out.print(fullText);
         }
         catch  (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private char decode (char c, int offset)
+    {
 
     }
+
+
+
 }
