@@ -29,7 +29,7 @@ public class KryptDecoder {
         try {
             encodedFile = new File(encodedFileName);
 
-            // kein decodedFileName -> erzeugen auf Basis des encodedFileNames
+            // kein Filename angegeben -> erzeugen auf Basis des encodedFiles
             if(decodedFileName.isEmpty())
             {
                 if (encodedFileName.lastIndexOf('.') != -1) //Punkt vorhanden?
@@ -65,18 +65,27 @@ public class KryptDecoder {
             byte[] fullFile = Files.readAllBytes(encodedFile.toPath());
 
             // Umwandeln in String
-            String fullText = new String(fullFile, StandardCharsets.UTF_8);
+            // Charset US_ASCII sonst wird nicht die ASCII Tabelle für die Position der Zeichen herangezogen!! (UTF-8 anders)
+            String fullText = new String(fullFile, StandardCharsets.US_ASCII);
             //System.out.print(fullText);
 
             // initiale Stelle im Schlüssel-Array key[]
-            int keyPos = key[0];
+            int keyPos = 0;
 
             // String Zeichen für Zeichen durchgehen
             for (int i = 0; i < fullText.length(); i++) {
+                //Zeichen decodieren anzeigen und in decodedFile schreiben
 
-                //Zeichen decodieren
-                System.out.print(decode(fullText.charAt(i), i));
+                char c = decode(fullText.charAt(i), key[keyPos]);
+                System.out.print(c);
+                decodedFile.write(c);
+
+                // zur nächsten Stelle im Schlüssel Array key[]
+                keyPos++;
+                keyPos %= KEYLENGTH;
             }
+            // File zu
+            decodedFile.close();
 
         }
         catch  (IOException e) {
@@ -92,8 +101,41 @@ public class KryptDecoder {
      */
     private char decode (char c, int offset)
     {
-        char decodedChar = c;
-        return (decodedChar);
+        //Leerzeichen? -> bekommt Code 'A'-1 == ein Buchstaben vor A in der ASCII Tabelle
+        if (c == ' ')
+        {
+            c = 'A' - 1;
+        }
+
+        if (c >= 'A' - 1 && c <= 'Z')
+        {
+            //eigentlicher Codiervorgang
+            c -= offset;
+
+            //codiertes Zeichen nach 'Z' ?
+            if (c > 'Z')
+            {
+
+                c=(char)(c-27);
+            }
+
+            //codiertes Zeichen hinter dem Leerzeichen?
+            if (c < 'A' -1)
+            {
+                c=(char) (c+27);
+            }
+
+        }
+        // Leerzeichen, nicht @ aus der ASCII Tabelle!
+        if (c == 'A' - 1)
+        {
+            return ' ';
+        }
+        else
+        {
+            return c;
+        }
+
     }
 
 
