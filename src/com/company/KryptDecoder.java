@@ -1,7 +1,7 @@
 package com.company;
 
 /**
- * Philipp Griess, 4ACIF
+ * Philipp Griess, 4ACIF, 10.60.2021
  * Entschlüsselt vereinfachte Textfeiles nach dem KryptEncoder mit einem mindestens 10-stelligen Schlüssel nach Vigenere
  */
 
@@ -137,7 +137,4 @@ public class KryptDecoder {
         }
 
     }
-
-
-
 }
